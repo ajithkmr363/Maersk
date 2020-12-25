@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: MaerskAPI
+  namespace: maersk
+  labels:
+    app: MaerskAPI
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: MaerskAPI
+  template:
+    metadata:
+      labels:
+        app: MaerskAPI
+        role: rolling-update
+    spec:
+      containers:
+      - name: MaerskAPI
+        image: MaerskTestACR.azurecr.io/MaerskAPI:#{BuildId}#
+        livenessProbe:
+          httpGet:
+            path: /self
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+            memory: 300Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+  strategy:
+    type: RollingUpdate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: MaerskAPI
+  namespace: maersk
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: MaerskAPI
