@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "Maersk_User"
+    },
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/14c91d9d-2bde-485a-9403-ad8ecf1f1c06/resourceGroups/MaerskRG/providers/Microsoft.KeyVault/vaults/MaerskVaults"
+        },
+        "secretName": "Maersk-Password"
+      }
+    },
+    "windowsOSVersion": {
+        "value": "2016-Datacenter"
+    },
+    "location": {
+        "value": "West Europe"
+    },
+    "vmSize": {
+        "value": "Standard_DS1_v2"
+    },
+    "vmName":{
+        "value": "MaerskWindows2016VM"
+    },
+    "virtualMachineRG":{
+        "value": "MaerskRG"
+    },
+    "nicName":{
+        "value": "MaerskNewNIC"
+    },
+    "imagePublisher":{
+        "value": "MicrosoftWindowsServer"
+    },
+    "imageOffer":{
+        "value": "WindowsServer"
+    },
+    "virtualNetworkName":{
+        "value": "MaerskNewVNet"
+    }
+}
+}
